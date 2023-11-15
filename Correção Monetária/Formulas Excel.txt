@@ -1,0 +1,34 @@
+Se houver uma tabela com os dados da SELIC, estas formulas conseguem calcular qualquer arualização MENSAL:
+
+####### Juros Simples ##########
+=SE(
+    OU([@Inicio]=0;[@Inicio]>[@Fim]);
+    0;
+    SEERRO(
+        SOMASES(
+            Selic[porc];
+            Selic[Data];">="&[@Inicio];
+            Selic[Data];"<="&[@Fim]
+        );
+        0
+    )
+)
+
+
+####### Juros Compostos ##########
+=SE(
+    OU([@Inicio]=0;[@Inicio]>[@Fim]);
+    0;
+    SEERRO(
+        MULT(
+            FILTRO(
+                Selic[Mult];
+                (Selic[Data]>=[@Inicio])*
+                (Selic[Data]<=[@Fim])
+            )
+        )-1;
+        0
+    )
+)
+
+
